@@ -1,0 +1,54 @@
+html {
+  background-color: #3c3c3c; }
+
+#root {
+  display: flex;
+  align-items: center;
+  height: 100vh; }
+
+#main__simon__game__container {
+  background-color: #202020;
+  height: 19rem;
+  width: 19rem;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  #main__simon__game__container__center {
+    position: absolute;
+    width: calc(19rem - (19rem / 2));
+    height: calc(19rem - (19rem / 2));
+    border-radius: 50%;
+    background-color: #202020; }
+
+#main__simon__game__container__buttons {
+  justify-content: center;
+  align-items: center;
+  width: calc(19rem - (19rem * 0.08));
+  height: calc(19rem - (19rem * 0.08));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-row-gap: 0.5rem;
+  grid-column-gap: 0.5rem; }
+  #main__simon__game__container__buttons__red {
+    height: 99%;
+    width: 99%;
+    background-color: red;
+    border-radius: 100% 2% 10% 2%; }
+  #main__simon__game__container__buttons__green {
+    height: 100%;
+    width: 100%;
+    background-color: green;
+    border-radius: 2% 100% 2% 10%; }
+  #main__simon__game__container__buttons__blue {
+    height: 100%;
+    width: 100%;
+    background-color: blue;
+    border-radius: 2% 10% 2% 100%; }
+  #main__simon__game__container__buttons__yellow {
+    height: 100%;
+    width: 100%;
+    background-color: yellow;
+    border-radius: 10% 2% 100% 2%; }
