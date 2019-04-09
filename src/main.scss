@@ -3,6 +3,7 @@ $diameter: 19rem;
 $buttonsDiameter: calc(#{$diameter} - (#{$diameter} * 0.08));
 $centerCapDiameter: calc(#{$diameter} - (#{$diameter} / 2));
 $buttonLength: 7rem;
+$defaultButtonOpacity: 0.4;
 
 html{
     background-color: #3c3c3c;
@@ -29,6 +30,7 @@ html{
         height: $centerCapDiameter;
         border-radius: 50%;
         background-color: map-get($colors, gameboard);
+        z-index: 999;
     }
 }
 
@@ -48,6 +50,7 @@ html{
         width: 99%;
         background-color: red;
         border-radius: 100% 2% 10% 2%;
+        transition: opacity 0.1s;
     }
 
     &__green{
@@ -71,3 +74,22 @@ html{
         border-radius: 10% 2% 100% 2%;
     }
 }
+
+
+.active__button{
+    opacity: 1;
+}
+
+.inactive__button{
+    opacity: 0.4;
+}
+
+ // <div id="main__simon__game__container">
+    //     <div id="main__simon__game__container__center"></div>
+    //     <div id="main__simon__game__container__buttons">
+    //         <div id="main__simon__game__container__buttons__red"></div>
+    //         <div id="main__simon__game__container__buttons__green"></div>
+    //         <div id="main__simon__game__container__buttons__blue"></div>
+    //         <div id="main__simon__game__container__buttons__yellow"></div>
+    //     </div>
+    // </div>

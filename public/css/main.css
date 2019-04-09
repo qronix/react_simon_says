@@ -20,7 +20,8 @@ html {
     width: calc(19rem - (19rem / 2));
     height: calc(19rem - (19rem / 2));
     border-radius: 50%;
-    background-color: #202020; }
+    background-color: #202020;
+    z-index: 999; }
 
 #main__simon__game__container__buttons {
   justify-content: center;
@@ -36,7 +37,8 @@ html {
     height: 99%;
     width: 99%;
     background-color: red;
-    border-radius: 100% 2% 10% 2%; }
+    border-radius: 100% 2% 10% 2%;
+    transition: opacity 0.1s; }
   #main__simon__game__container__buttons__green {
     height: 100%;
     width: 100%;
@@ -52,3 +54,9 @@ html {
     width: 100%;
     background-color: yellow;
     border-radius: 10% 2% 100% 2%; }
+
+.active__button {
+  opacity: 1; }
+
+.inactive__button {
+  opacity: 0.4; }
