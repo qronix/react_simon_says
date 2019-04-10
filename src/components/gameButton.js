@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import ReactHowler from 'react-howler';
 
 const gameButton = (props) => {
 
@@ -7,28 +8,32 @@ const gameButton = (props) => {
     const buttonClasses = ['inactive__button', 'active__button'];
 
     const handleClick = () => {
-        let state = {...active, activated:true};
-        setActive(state);
-        console.log(state);
-        clearActive();
-        props.onClick(props.color);
+        if(!active.activated){
+            let state = {...active, activated:true};
+            setActive(state);
+            clearActive();
+            props.onClick(props.color);
+        }
     }
     const clearActive = () => {
             setTimeout(()=>{
                 let state = {...active, activated:false};
                 setActive(state);
-            },1000);
+            },props.buttonDelay);
     }
 
     useEffect(()=>{
         updateButton();
-        console.log(`This button is active: ${console.dir(active)}`);
     });
 
     const updateButton = () =>{
         active.activated ? buttonRef.current.className = buttonClasses[1] :  buttonRef.current.className = buttonClasses[0];
     }
-    return <div ref={buttonRef} id={`main__simon__game__container__buttons__${props.color}`} onClick={handleClick}/>;
+    return (
+    <div ref={buttonRef} id={`main__simon__game__container__buttons__${props.color}`} onClick={handleClick}>
+        <ReactHowler src={[`sounds/${props.sound}`]} playing={active.activated} html5={true}/>
+    </div>
+    );
 }
 
 export default gameButton;
