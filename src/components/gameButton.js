@@ -1,39 +1,54 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {Component} from 'react';
 import ReactHowler from 'react-howler';
 
-const gameButton = (props) => {
+class gameButton extends Component {
+    
+    state = {
+        activated:false
+    }
 
-    const buttonRef = useRef(null);
-    const [active, setActive] = useState({activated:false});
-    const buttonClasses = ['inactive__button', 'active__button'];
+    constructor({color, onClick, buttonDelay, sound}){
+        super();
+        this.sound = sound;
+        this.buttonDelay = buttonDelay;
+        this.onClick = onClick;
+        this.color = color;
+        this.buttonRef = React.createRef();
+        this.buttonClasses = ['inactive__button', 'active__button'];
+    }
 
-    const handleClick = () => {
-        if(!active.activated){
-            let state = {...active, activated:true};
-            setActive(state);
-            clearActive();
-            props.onClick(props.color);
+    handleClick = () => {
+        if(!this.state.active){
+            this.setState({activated:true});
+            this.clearActive();
+            this.onClick(this.color);
         }
     }
-    const clearActive = () => {
-            setTimeout(()=>{
-                let state = {...active, activated:false};
-                setActive(state);
-            },props.buttonDelay);
+
+    clearActive = () => {
+        setTimeout(()=>{
+            this.setState({activated:false});
+        },this.buttonDelay);
     }
 
-    useEffect(()=>{
-        updateButton();
-    });
-
-    const updateButton = () =>{
-        active.activated ? buttonRef.current.className = buttonClasses[1] :  buttonRef.current.className = buttonClasses[0];
+    componentDidMount (){
+        this.updateButtonClass();
     }
-    return (
-    <div ref={buttonRef} id={`main__simon__game__container__buttons__${props.color}`} onClick={handleClick}>
-        <ReactHowler src={[`sounds/${props.sound}`]} playing={active.activated} html5={true}/>
-    </div>
-    );
+
+    componentDidUpdate (){
+        this.updateButtonClass();
+    }
+
+    updateButtonClass(){
+        this.state.activated ? this.buttonRef.current.className = this.buttonClasses[1] :  this.buttonRef.current.className = this.buttonClasses[0];
+    }
+    render(){
+        return (
+            <div ref={this.buttonRef} id={`main__simon__game__container__buttons__${this.color}`} onClick={this.handleClick}>
+                <ReactHowler src={[`sounds/${this.sound}`]} playing={this.state.activated} html5={true}/>
+            </div>
+        );
+    }
 }
 
 export default gameButton;
