@@ -4,7 +4,8 @@ import ReactHowler from 'react-howler';
 class gameButton extends Component {
     
     state = {
-        activated:false
+        activated:false,
+        enabled:false
     }
 
     constructor({color, onClick, buttonDelay, sound}){
@@ -18,14 +19,26 @@ class gameButton extends Component {
     }
 
     handleClick = () => {
-        if(!this.state.active){
+        if(!this.state.active && this.state.enabled){
             this.setState({activated:true});
             this.clearActive();
             this.onClick(this.color);
         }
     }
 
-    clearActive = () => {
+    enableButton(){
+        this.setState({enabled:true});
+    }
+
+    disableButton(){
+        this.setState({enabled:false});
+    }
+    autoClick(){
+        this.setState({activated:true});
+        this.clearActive();
+        this.onClick(this.color);
+    }
+    clearActive(){
         setTimeout(()=>{
             this.setState({activated:false});
         },this.buttonDelay);

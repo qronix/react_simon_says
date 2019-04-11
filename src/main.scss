@@ -99,7 +99,7 @@ html{
                 width: 1rem;
                 background-color: rgb(219, 219, 26);
                 border-radius: 50%;
-                border:3px solid rgb(32, 32, 32);
+                border:2px solid rgb(32, 32, 32);
                 transform: perspective(0,4deg);
             }
 
@@ -108,14 +108,14 @@ html{
                 width: 1rem;
                 background-color: rgb(219, 26, 26);
                 border-radius: 50%;
-                border:3px solid rgb(32, 32, 32);                    
+                border:2px solid rgb(32, 32, 32);                    
             }
             &--start{
                 height: 90%;
                 width: 1rem;
                 background-color: rgb(26, 158, 219);
                 border-radius: 50%;
-                border:3px solid rgb(32, 32, 32);
+                border:2px solid rgb(32, 32, 32);
             }
         }
 
