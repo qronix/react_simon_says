@@ -28,9 +28,23 @@ class SimonGame extends Component {
     }
 
     render() {
+        //pointer-events
         return(          
             <div id="main__simon__game__container">
-            <div id="main__simon__game__container__center"/>
+            <div id="main__simon__game__container__center">    
+                <span>SIMON</span>
+                <div id="main__simon__game__container__center__controls__display">--</div>
+            </div>
+            <div id="main__simon__game__container__center__controls__container">
+                    <div id="main__simon__game__container__center__controls__container__buttons">
+                        {/* <label for="main__simon__game__container__center__controls__container__buttons--audio">Mute</label> */}
+                        <div id="main__simon__game__container__center__controls__container__buttons--audio"></div>
+                        {/* <label for="main__simon__game__container__center__controls__container__buttons--reset">Reset</label> */}
+                        <div id="main__simon__game__container__center__controls__container__buttons--reset"></div>
+                        {/* <label for="main__simon__game__container__center__controls__container__buttons--start">Start</label> */}
+                        <div id="main__simon__game__container__center__controls__container__buttons--start"></div>
+                    </div>
+                </div>
             <div id="main__simon__game__container__buttons">
                 <GameButton onClick={this.handleButtonClick} color={this.colors[0]} sound={SOUND_FILES[0]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[0].ref}/>
                 <GameButton onClick={this.handleButtonClick} color={this.colors[1]} sound={SOUND_FILES[1]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[1].ref}/>

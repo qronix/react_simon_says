@@ -4,6 +4,13 @@ $buttonsDiameter: calc(#{$diameter} - (#{$diameter} * 0.08));
 $centerCapDiameter: calc(#{$diameter} - (#{$diameter} / 2));
 $buttonLength: 7rem;
 $defaultButtonOpacity: 0.4;
+@font-face {
+    font-family: 'digital-7regular';
+    src: url('../fonts/digital-7-webfont.woff2') format('woff2'),
+         url('../fonts/digital-7-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 html{
     background-color: #3c3c3c;
@@ -14,6 +21,7 @@ html{
     align-items: center;
     height: 100vh;
 }
+
 #main__simon__game__container{
     background-color: map-get($colors, gameboard);
     height: $diameter;
@@ -29,8 +37,88 @@ html{
         width: $centerCapDiameter;
         height: $centerCapDiameter;
         border-radius: 50%;
-        background-color: map-get($colors, gameboard);
+        // background-color: map-get($colors, gameboard);
+        background-color: rgb(224, 224, 224);
         z-index: 999;
+        text-align: center;
+        align-content: center;
+        // pointer-events: none;
+        span{
+            height: 50%;
+            width: 100%;
+            position: relative;
+            top: 1.4rem;
+            z-index: 999;
+            text-align: center;
+            color: black;
+            margin:0 auto;
+            font-weight: bold;
+            letter-spacing: 0.3rem;
+        }
+
+        &__controls{
+            &__display{
+                background-color: map-get($colors, gameboard);
+                width: 50%;
+                height: 2rem;
+                position: absolute;
+                transform: translate(2.3rem, 1.7rem);
+                font-family: 'digital-7regular';
+                color: rgb(214, 38, 38);
+                font-weight: bold;
+                letter-spacing: 0.3rem;
+                font-size: 2rem;
+                text-align: center;
+                padding-bottom: 0.3rem;
+                text-shadow: 1px 1px 2px rgba(214, 38, 38, 0.6);
+            }
+        }  
+    }
+    &__center__controls__container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        z-index: 999;
+        height:1rem;
+        width:7rem;
+        margin: 0 auto;
+        transform: translateY(2rem);
+        &__buttons{
+            display:flex;
+            flex-wrap: wrap;
+            width:100%;
+            height: 100%;
+            align-items: center;
+            justify-content: space-between;
+            label{
+                flex: 33%;
+            }
+            &--audio{
+                height: 90%;
+                width: 1rem;
+                background-color: rgb(219, 219, 26);
+                border-radius: 50%;
+                border:3px solid rgb(32, 32, 32);
+                transform: perspective(0,4deg);
+            }
+
+            &--reset{
+                height: 90%;
+                width: 1rem;
+                background-color: rgb(219, 26, 26);
+                border-radius: 50%;
+                border:3px solid rgb(32, 32, 32);                    
+            }
+            &--start{
+                height: 90%;
+                width: 1rem;
+                background-color: rgb(26, 158, 219);
+                border-radius: 50%;
+                border:3px solid rgb(32, 32, 32);
+            }
+        }
+
     }
 }
 
