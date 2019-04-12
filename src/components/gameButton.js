@@ -33,15 +33,18 @@ class gameButton extends Component {
     disableButton(){
         this.setState({enabled:false});
     }
-    autoClick(){
+    async autoClick(){
         this.setState({activated:true});
-        this.clearActive();
-        this.onClick(this.color);
+        await this.clearActive();
+        return new Promise(resolve=>resolve());
     }
     clearActive(){
-        setTimeout(()=>{
-            this.setState({activated:false});
-        },this.buttonDelay);
+        return new Promise(resolve=>{
+            setTimeout(()=>{
+                this.setState({activated:false});
+                resolve();
+            },this.buttonDelay);
+        })
     }
 
     componentDidMount (){
