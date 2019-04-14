@@ -8,13 +8,14 @@ class gameButton extends Component {
         enabled:false
     }
 
-    constructor({color, onClick, buttonDelay, sound}){
+    constructor({color, onClick, buttonDelay, sound, audioEnabled}){
         super();
         this.sound = sound;
         this.buttonDelay = buttonDelay;
         this.onClick = onClick;
         this.color = color;
         this.buttonRef = React.createRef();
+        this.audioEnabled = audioEnabled;
         this.buttonClasses = ['inactive__button', 'active__button'];
     }
 
@@ -61,7 +62,7 @@ class gameButton extends Component {
     render(){
         return (
             <div ref={this.buttonRef} id={`main__simon__game__container__buttons__${this.color}`} onClick={this.handleClick}>
-                <ReactHowler src={[`sounds/${this.sound}`]} playing={this.state.activated} html5={true}/>
+                <ReactHowler src={[`sounds/${this.sound}`]} playing={(this.state.activated && this.audioEnabled)} html5={true}/>
             </div>
         );
     }

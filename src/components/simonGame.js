@@ -14,7 +14,8 @@ class SimonGame extends Component {
         playerTurn: false,
         started:false,
         lost:false,
-        playerPlayed:false
+        playerPlayed:false,
+        audioEnabled:true,
     }
 
     constructor(){
@@ -44,6 +45,18 @@ class SimonGame extends Component {
     handleControlClick = (action) => {
         if(action==="start"){
             this.startGame();
+        }
+        if(action === "audio"){
+            this.toggleAudio();
+        }
+    }
+
+    toggleAudio(){
+        if(this.state.audioEnabled){
+            this.setState({audioEnabled:false});
+        }
+        else{
+            this.setState({audioEnabled:true});
         }
     }
 
@@ -97,7 +110,6 @@ class SimonGame extends Component {
         }
     }
     checkPlayerMoves(){
-        // let correctMoves = this.state.gameMoves.every(item=>this.state.gameMoves[item]===this.state.userMoves[item]);
         for(let i=0; i<this.state.userMoves.length; i++){
             if(this.state.gameMoves[i] !== this.state.userMoves[i]){
                 return this.gameOver();
@@ -150,16 +162,16 @@ class SimonGame extends Component {
             <div id="main__simon__game__container__center">    
                 <span>SIMON</span>
                 <div id="main__simon__game__container__center__controls__display">{this.state.gameMoves.length}</div>
-                <ReactHowler src/>
+                {/* <ReactHowler src={[]}/> */}
             </div>
             <div id="main__simon__game__container__center__controls__container">
                 <GameControls controlClick={this.handleControlClick}/>       
             </div>
             <div id="main__simon__game__container__buttons">
-                <GameButton onClick={this.handleButtonClick} color={this.colors[0]} sound={SOUND_FILES[0]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[0].ref}/>
-                <GameButton onClick={this.handleButtonClick} color={this.colors[1]} sound={SOUND_FILES[1]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[1].ref}/>
-                <GameButton onClick={this.handleButtonClick} color={this.colors[2]} sound={SOUND_FILES[2]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[2].ref}/>
-                <GameButton onClick={this.handleButtonClick} color={this.colors[3]} sound={SOUND_FILES[3]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[3].ref}/>
+                <GameButton onClick={this.handleButtonClick} color={this.colors[0]} sound={SOUND_FILES[0]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[0].ref} audioEnabled={this.state.audioEnabled}/>
+                <GameButton onClick={this.handleButtonClick} color={this.colors[1]} sound={SOUND_FILES[1]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[1].ref} audioEnabled={this.state.audioEnabled}/>
+                <GameButton onClick={this.handleButtonClick} color={this.colors[2]} sound={SOUND_FILES[2]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[2].ref} audioEnabled={this.state.audioEnabled}/>
+                <GameButton onClick={this.handleButtonClick} color={this.colors[3]} sound={SOUND_FILES[3]} buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[3].ref} audioEnabled={this.state.audioEnabled}/>
             </div>
         </div>
         );
