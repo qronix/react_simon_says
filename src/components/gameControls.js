@@ -21,10 +21,3 @@ export default class GameControls extends Component{
         );
     }
 }
-
-
-{/* <div id="main__simon__game__container__center__controls__container__buttons">
-    <div id="main__simon__game__container__center__controls__container__buttons--audio"></div>
-    <div id="main__simon__game__container__center__controls__container__buttons--reset"></div>
-    <div id="main__simon__game__container__center__controls__container__buttons--start"></div>
-</div> */}
