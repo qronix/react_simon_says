@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactHowler from 'react-howler';
 
 class gameButton extends Component {
     state = {
@@ -27,13 +26,11 @@ class gameButton extends Component {
     }
 
     enableButton() {
-        console.log('enabling button');
-      this.setState({ enabled: true });
+        this.setState({ enabled: true });
     }
 
     disableButton() {
-        console.log('Got it!, Disabling button!');
-        this.setState({ enabled: false }, ()=>console.dir(this.state));
+        this.setState({ enabled: false });
     }
 
     async autoClick() {
@@ -65,9 +62,7 @@ class gameButton extends Component {
 
     render() {
       return (
-          <div ref={ this.buttonRef } id={ `main__simon__game__container__buttons__${this.color}` } onClick={ this.handleClick }>
-              {/* <ReactHowler src={ [`sounds/${this.sound}`] } playing={ (this.state.activated && this.audioEnabled) } html5 /> */}
-            </div>
+          <div ref={ this.buttonRef } id={ `main__simon__game__container__buttons__${this.color}` } onClick={ this.handleClick }/>
       );
     }
 }
