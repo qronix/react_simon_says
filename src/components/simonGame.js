@@ -54,7 +54,7 @@ class SimonGame extends Component {
     }
 
     playSound(color){
-        if(this.state.audioEnabled){
+        if(this.state.audioEnabled && this.state.playing){
             let soundIndex = this.soundColorMap[color] || this.soundColorMap['red'];
             this.setState({ currentSound:SOUND_FILES[soundIndex], playingSound: true });
         } else{
@@ -94,6 +94,10 @@ class SimonGame extends Component {
     }
 
     resetGame(fn=this.startGame){
+        console.log('ReSET MUHHH FUKKKAAA!');
+        // this.toggleControls();
+        // this.render();
+        this.killButtons();
         this.setState({ 
             gameMoves: [],
             userMoves: [],
@@ -106,8 +110,17 @@ class SimonGame extends Component {
             audioEnabled: true,
             playingSound: false,
             currentSound: SOUND_FILES[0], 
-        },() => fn());
+        });
+        this.resetButtons();
     }
+
+    resetButtons(){
+        let targets = this.buttonRefs
+        for(const item in targets){
+            targets[item].ref.current.resetButton();
+        }
+    }
+
     toggleControls() {
       if (this.state.compsTurn) {
         for (const item in this.buttonRefs) {
@@ -131,6 +144,12 @@ class SimonGame extends Component {
         }   
     }
 
+    killButtons(){
+        for (const item in this.buttonRefs){
+            this.buttonRefs[item].ref.current.killButton();
+        }
+    }
+
     playGame = async ()=> {
       if (this.state.compsTurn && this.state.playing) {
         this.setState({ userMoves: [] });
@@ -146,16 +165,23 @@ class SimonGame extends Component {
 
     async playCompMoves() {
       for (let i = 0; i < this.state.gameMoves.length; i++) {
-        const colorIndex = this.state.gameMoves[i];
-        await new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(
-                (()=>{
-                this.buttonRefs[colorIndex].ref.current.autoClick();
-                this.playSound(this.colors[colorIndex])})()
-            )}, this.timeBetweenPCMoves);
-        });
-      }
+          if(this.state.playing){
+            const colorIndex = this.state.gameMoves[i];
+            await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(
+                    (()=>{
+                        if(this.state.playing){
+                            this.buttonRefs[colorIndex].ref.current.autoClick();
+                            this.playSound(this.colors[colorIndex])
+                        }
+                    })()
+                )}, this.timeBetweenPCMoves);
+            });
+        }else{
+            break;
+        }
+    }
       return new Promise(res=>{
           res();
       });
@@ -204,7 +230,7 @@ class SimonGame extends Component {
               <div id="main__simon__game__container__center">
               <span>SIMON</span>
               <div id="main__simon__game__container__center__controls__display">{this.state.gameMoves.length}</div>
-              <ReactHowler src={[`sounds/${this.state.currentSound}`]} playing={ this.state.playingSound }  html5/>
+              <ReactHowler src={[`sounds/${this.state.currentSound}`]} playing={ this.state.playingSound }  html5 ref={this.howlerRef}/>
             </div>
               <div id="main__simon__game__container__center__controls__container">
               <GameControls controlClick={this.handleControlClick} />

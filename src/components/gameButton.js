@@ -4,6 +4,7 @@ class gameButton extends Component {
     state = {
       activated: false,
       enabled: false,
+      alive: true
     }
 
     constructor({ color = 'red', onClick = () => console.log('click not setup'), buttonDelay = 500, sound = 'beep_one.ogg', audioEnabled = true }) {
@@ -48,12 +49,24 @@ class gameButton extends Component {
       });
     }
 
+    killButton(){
+        this.setState({ activated: false, enabled: false, alive: false});
+        this.buttonRef.current.className = this.buttonClasses[0];
+    }
+
+    resetButton(){
+        this.setState({ alive:true });
+    }
     componentDidMount() {
-      this.updateButtonClass();
+        if(this.state.alive){
+            this.updateButtonClass();
+        }
     }
 
     componentDidUpdate() {
-      this.updateButtonClass();
+        if(this.state.alive){
+            this.updateButtonClass();
+        }
     }
 
     updateButtonClass() {
