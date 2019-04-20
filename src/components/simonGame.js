@@ -18,6 +18,7 @@ class SimonGame extends Component {
       audioEnabled: true,
       playingSound: false,
       currentSound: SOUND_FILES[0],
+      keyTimers: [],
     }
 
     constructor() {
@@ -48,12 +49,17 @@ class SimonGame extends Component {
 
     handleButtonClick(color) {
       const choiceIndex = this.colors.indexOf(color);
-      this.setState({ userMoves: [...this.state.userMoves, choiceIndex] }, () => {
+      this.clearTimers();
+      this.setState({ userMoves: [...this.state.userMoves, choiceIndex], playerPlayed:true}, () => {
         this.playSound(color);
         this.checkPlayerMoves();
       });
     }
 
+    clearTimers(){
+        this.setState({keyTimers: []});
+        console.log('Timers are clear!');
+    }
     playSound(color){
         if(this.state.audioEnabled && this.state.playing){
             let soundIndex = this.soundColorMap[color] || this.soundColorMap['red'];
@@ -164,8 +170,10 @@ class SimonGame extends Component {
         const number = this.generateNumber();
         this.setState({ gameMoves: [...this.state.gameMoves, number] }, async () => {
             await new Promise(res=>setTimeout(()=>res(),500));
+            console.log('Playing comp moves')
             await this.playCompMoves();
             this.toggleTurns(this.toggleControls);
+            console.log('Adding a timer!')
             this.playerTurnTimer();
         });
       }
@@ -201,12 +209,13 @@ class SimonGame extends Component {
           return this.gameOver();
         }
       }
+      this.setState({ playerPlayed: false });
       console.log('Nice job!');
       if (this.state.userMoves.length === this.state.gameMoves.length) {
-        this.setState({ playerPlayed: true }, () => {
           this.toggleControls();
           this.toggleTurns(this.playGame);
-        });
+      }else{
+        this.playerTurnTimer();
       }
     }
 
@@ -221,13 +230,26 @@ class SimonGame extends Component {
 
     //fix this horrible abomination
     playerTurnTimer = () => {
-      setTimeout(() => {
+        console.log('Adding a timer!');
+      let id = setTimeout(() => {
         if (!this.state.playerPlayed && this.state.playerTurn) {
-          console.log('You didn\'t play');
+            console.log('checking timer');
+            this.checkKeyTimer(id);
         }
-      }, 3000);
+      }, 2000);
+      this.setState({ keyTimers: [...this.state.keyTimers, id] });
     }
 
+    checkKeyTimer(id){
+        console.log(`Checking timer with id ${id}`);
+        console.log(`Index of timer : ${this.state.keyTimers.indexOf(id)}`);
+        if(this.state.keyTimers.indexOf(id) !== -1){
+            console.log('no good');
+            this.gameOver();
+        }else{
+            console.log('we good fam');
+        }
+    }
     generateNumber=() => Math.floor(Math.random() * (this.buttonRefs.length));
 
 
