@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactHowler from 'react-howler';
 import GameButton from './gameButton';
-import {SOUND_FILES} from '../sounds';
+import { SOUND_FILES } from '../sounds';
 import GameControls from './gameControls';
 
 class SimonGame extends Component {
@@ -47,19 +47,19 @@ class SimonGame extends Component {
       }
     }
 
-    handleButtonClick(color) {
+    handleButtonClick(color){
       const choiceIndex = this.colors.indexOf(color);
       this.clearTimers();
-      this.setState({ userMoves: [...this.state.userMoves, choiceIndex], playerPlayed:true}, () => {
+      this.setState({ userMoves: [...this.state.userMoves, choiceIndex], playerPlayed:true }, () => {
         this.playSound(color);
         this.checkPlayerMoves();
       });
     }
 
     clearTimers(){
-        this.setState({keyTimers: []});
-        console.log('Timers are clear!');
+        this.setState({ keyTimers: [] });
     }
+
     playSound(color){
         if(this.state.audioEnabled && this.state.playing){
             let soundIndex = this.soundColorMap[color] || this.soundColorMap['red'];
@@ -70,10 +70,10 @@ class SimonGame extends Component {
     }
 
     handleControlClick = (action) => {
-      if (action === 'start') {
+      if (action === 'start'){
         this.startGame();
       }
-      if (action === 'audio') {
+      if (action === 'audio'){
         this.toggleAudio();
       }
       if (action === 'reset'){
@@ -82,17 +82,15 @@ class SimonGame extends Component {
     }
 
     toggleAudio() {
-      if (this.state.audioEnabled) {
+      if (this.state.audioEnabled){
         this.setState({ audioEnabled: false });
       }
-      else {
+      else{
         this.setState({ audioEnabled: true });
       }
     }
 
     startGame() {
-        console.log(`Playing: ${this.state.playing} lost: ${this.state.lost}`);
-        console.log(!this.state.playing && !this.state.lost)
         if(!this.state.playing && !this.state.lost){
             this.setState({ currentSound: SOUND_FILES })
             this.setState({ playing: true, compsTurn: true, started: true }, () => this.playGame());
@@ -106,10 +104,7 @@ class SimonGame extends Component {
         this.setState({ playingSound: false });
     }
 
-    resetGame(fn=this.startGame){
-        console.log('ReSET MUHHH FUKKKAAA!');
-        // this.toggleControls();
-        // this.render();
+    resetGame(){
         this.killButtons();
         this.setState({ 
             gameMoves: [],
@@ -134,16 +129,16 @@ class SimonGame extends Component {
         }
     }
 
-    toggleControls() {
-      if (this.state.compsTurn) {
-        for (const item in this.buttonRefs) {
+    toggleControls(){
+      if (this.state.compsTurn){
+        for (const item in this.buttonRefs){
           this.buttonRefs[item].ref.current.disableButton();
         }
-        return new Promise(res=>{
+        return new Promise(res => {
             setTimeout(res(),200);
         });
       }else {
-        for (const item in this.buttonRefs) {
+        for (const item in this.buttonRefs){
           this.buttonRefs[item].ref.current.enableButton();
         }
       }
@@ -151,9 +146,9 @@ class SimonGame extends Component {
 
     toggleTurns(fn){
         if(this.state.compsTurn){
-            this.setState({compsTurn:false, playerTurn:true, playerPlayed:false},()=> fn());
+            this.setState({compsTurn:false, playerTurn:true, playerPlayed:false}, () => fn());
         } else{
-            this.setState({compsTurn:true, playerTurn:false}, ()=>fn());
+            this.setState({compsTurn:true, playerTurn:false}, () => fn());
         }   
     }
 
@@ -163,30 +158,28 @@ class SimonGame extends Component {
         }
     }
 
-    playGame = async ()=> {
-      if (this.state.compsTurn && this.state.playing) {
+    playGame = async () => {
+      if (this.state.compsTurn && this.state.playing){
         this.setState({ userMoves: [] });
         await this.toggleControls()
         const number = this.generateNumber();
         this.setState({ gameMoves: [...this.state.gameMoves, number] }, async () => {
-            await new Promise(res=>setTimeout(()=>res(),500));
-            console.log('Playing comp moves')
+            await new Promise(res=>setTimeout(() => res(), 500));
             await this.playCompMoves();
             this.toggleTurns(this.toggleControls);
-            console.log('Adding a timer!')
             this.playerTurnTimer();
         });
       }
     }
 
-    async playCompMoves() {
-      for (let i = 0; i < this.state.gameMoves.length; i++) {
+    async playCompMoves(){
+      for (let i = 0; i < this.state.gameMoves.length; i++){
           if(this.state.playing){
             const colorIndex = this.state.gameMoves[i];
             await new Promise((resolve) => {
             setTimeout(() => {
                 resolve(
-                    (()=>{
+                    (() => {
                         if(this.state.playing){
                             this.buttonRefs[colorIndex].ref.current.autoClick();
                             this.playSound(this.colors[colorIndex])
@@ -198,20 +191,19 @@ class SimonGame extends Component {
             break;
         }
     }
-      return new Promise(res=>{
+      return new Promise(res => {
           res();
       });
     }
 
-    checkPlayerMoves() {
-      for (let i = 0; i < this.state.userMoves.length; i++) {
-        if (this.state.gameMoves[i] !== this.state.userMoves[i]) {
+    checkPlayerMoves(){
+      for (let i = 0; i < this.state.userMoves.length; i++){
+        if (this.state.gameMoves[i] !== this.state.userMoves[i]){
           return this.gameOver();
         }
       }
       this.setState({ playerPlayed: false });
-      console.log('Nice job!');
-      if (this.state.userMoves.length === this.state.gameMoves.length) {
+      if (this.state.userMoves.length === this.state.gameMoves.length){
           this.toggleControls();
           this.toggleTurns(this.playGame);
       }else{
@@ -219,21 +211,18 @@ class SimonGame extends Component {
       }
     }
 
-    gameOver() {
+    gameOver(){
       this.setState({
         playing: false,
         lost: true,
         currentSound:SOUND_FILES[4]
-      }, ()=>setTimeout(()=>this.setState({ lost:false }, this.resetGame()), 2000));
+      }, () => setTimeout( () => this.setState({ lost:false }, this.resetGame()), 2000));
       
     }
 
-    //fix this horrible abomination
     playerTurnTimer = () => {
-        console.log('Adding a timer!');
       let id = setTimeout(() => {
-        if (!this.state.playerPlayed && this.state.playerTurn) {
-            console.log('checking timer');
+        if (!this.state.playerPlayed && this.state.playerTurn){
             this.checkKeyTimer(id);
         }
       }, 2000);
@@ -241,36 +230,31 @@ class SimonGame extends Component {
     }
 
     checkKeyTimer(id){
-        console.log(`Checking timer with id ${id}`);
-        console.log(`Index of timer : ${this.state.keyTimers.indexOf(id)}`);
         if(this.state.keyTimers.indexOf(id) !== -1){
-            console.log('no good');
             this.gameOver();
-        }else{
-            console.log('we good fam');
         }
     }
-    generateNumber=() => Math.floor(Math.random() * (this.buttonRefs.length));
+    generateNumber= () => Math.floor(Math.random() * (this.buttonRefs.length));
 
 
-    render() {
+    render(){
       return (
           <div id="main__simon__game__container">
-              <div id="main__simon__game__container__center">
-              <span>SIMON</span>
-              <div id="main__simon__game__container__center__controls__display">{this.state.gameMoves.length}</div>
-              <ReactHowler src={[`sounds/${this.state.currentSound}`]} playing={ this.state.playingSound }  html5 ref={this.howlerRef}/>
+            <div id="main__simon__game__container__center">
+                <span>SIMON</span>
+                <div id="main__simon__game__container__center__controls__display">{ this.state.gameMoves.length }</div>
+                <ReactHowler src={ [`sounds/${this.state.currentSound}`] } playing={ this.state.playingSound }  html5 ref={ this.howlerRef }/>
             </div>
-              <div id="main__simon__game__container__center__controls__container">
-              <GameControls controlClick={this.handleControlClick} />
+                <div id="main__simon__game__container__center__controls__container">
+                    <GameControls controlClick={ this.handleControlClick } />
+                </div>
+            <div id="main__simon__game__container__buttons">
+                <GameButton onClick = { this.handleButtonClick } color = { this.colors[0] }  buttonDelay = { this.buttonDelayTime } ref={ this.buttonRefs[0].ref } />
+                <GameButton onClick = { this.handleButtonClick } color = { this.colors[1] }  buttonDelay = { this.buttonDelayTime } ref={ this.buttonRefs[1].ref } />
+                <GameButton onClick = { this.handleButtonClick } color = { this.colors[2] }  buttonDelay = { this.buttonDelayTime } ref={ this.buttonRefs[2].ref } />
+                <GameButton onClick = { this.handleButtonClick } color = { this.colors[3] }  buttonDelay = { this.buttonDelayTime } ref={ this.buttonRefs[3].ref } />
             </div>
-              <div id="main__simon__game__container__buttons">
-              <GameButton onClick = {this.handleButtonClick} color = {this.colors[0]}  buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[0].ref} />
-              <GameButton onClick = {this.handleButtonClick} color = {this.colors[1]}  buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[1].ref} />
-              <GameButton onClick = {this.handleButtonClick} color = {this.colors[2]}  buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[2].ref} />
-              <GameButton onClick = {this.handleButtonClick} color = {this.colors[3]}  buttonDelay = {this.buttonDelayTime} ref={this.buttonRefs[3].ref} />
-            </div>
-            </div>
+        </div>
       );
     }
 }

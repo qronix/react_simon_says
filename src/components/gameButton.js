@@ -7,7 +7,8 @@ class gameButton extends Component {
       alive: true
     }
 
-    constructor({ color = 'red', onClick = () => console.log('click not setup'), buttonDelay = 500, sound = 'beep_one.ogg', audioEnabled = true }) {
+    constructor({ color = 'red', onClick = () => { throw new Error('Click handler is not set in game button') }, 
+        buttonDelay = 500, sound = 'beep_one.ogg', audioEnabled = true }) {
       super();
       this.sound = sound;
       this.buttonDelay = buttonDelay;
@@ -19,28 +20,28 @@ class gameButton extends Component {
     }
 
     handleClick = () => {
-      if (!this.state.active && this.state.enabled) {
+      if (!this.state.active && this.state.enabled){
         this.setState({ activated: true });
         this.clearActive();
         this.onClick(this.color);
       }
     }
 
-    enableButton() {
+    enableButton(){
         this.setState({ enabled: true });
     }
 
-    disableButton() {
+    disableButton(){
         this.setState({ enabled: false });
     }
 
-    async autoClick() {
+    async autoClick(){
       this.setState({ activated: true });
       await this.clearActive();
       return new Promise(resolve => resolve());
     }
 
-    clearActive() {
+    clearActive(){
       return new Promise((resolve) => {
         setTimeout(() => {
           this.setState({ activated: false });
@@ -50,30 +51,30 @@ class gameButton extends Component {
     }
 
     killButton(){
-        this.setState({ activated: false, enabled: false, alive: false});
+        this.setState({ activated: false, enabled: false, alive: false });
         this.buttonRef.current.className = this.buttonClasses[0];
     }
 
     resetButton(){
         this.setState({ alive:true });
     }
-    componentDidMount() {
+    componentDidMount(){
         if(this.state.alive){
             this.updateButtonClass();
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(){
         if(this.state.alive){
             this.updateButtonClass();
         }
     }
 
-    updateButtonClass() {
+    updateButtonClass(){
       this.state.activated ? this.buttonRef.current.className = this.buttonClasses[1] : this.buttonRef.current.className = this.buttonClasses[0];
     }
 
-    render() {
+    render(){
       return (
           <div ref={ this.buttonRef } id={ `main__simon__game__container__buttons__${this.color}` } onClick={ this.handleClick }/>
       );
