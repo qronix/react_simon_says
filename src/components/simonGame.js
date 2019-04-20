@@ -37,6 +37,7 @@ class SimonGame extends Component {
       this.toggleControls = this.toggleControls.bind(this);
       this.checkPlayerMoves = this.checkPlayerMoves.bind(this);
       this.howlerRef = React.createRef();
+      this.resetGame = this.resetGame.bind(this);
       this.soundColorMap = {
           'red':0,
           'green':1,
@@ -69,6 +70,9 @@ class SimonGame extends Component {
       if (action === 'audio') {
         this.toggleAudio();
       }
+      if (action === 'reset'){
+          this.resetGame();
+      }
     }
 
     toggleAudio() {
@@ -81,10 +85,13 @@ class SimonGame extends Component {
     }
 
     startGame() {
-        if(!this.state.playing){
+        console.log(`Playing: ${this.state.playing} lost: ${this.state.lost}`);
+        console.log(!this.state.playing && !this.state.lost)
+        if(!this.state.playing && !this.state.lost){
+            this.setState({ currentSound: SOUND_FILES })
             this.setState({ playing: true, compsTurn: true, started: true }, () => this.playGame());
         }
-        else{
+        else if(!this.state.lost){
             this.resetGame();
         }
     }
@@ -138,7 +145,7 @@ class SimonGame extends Component {
 
     toggleTurns(fn){
         if(this.state.compsTurn){
-            this.setState({compsTurn:false, playerTurn:true, playerPlayed:false}, ()=>fn());
+            this.setState({compsTurn:false, playerTurn:true, playerPlayed:false},()=> fn());
         } else{
             this.setState({compsTurn:true, playerTurn:false}, ()=>fn());
         }   
@@ -156,6 +163,7 @@ class SimonGame extends Component {
         await this.toggleControls()
         const number = this.generateNumber();
         this.setState({ gameMoves: [...this.state.gameMoves, number] }, async () => {
+            await new Promise(res=>setTimeout(()=>res(),500));
             await this.playCompMoves();
             this.toggleTurns(this.toggleControls);
             this.playerTurnTimer();
@@ -203,13 +211,12 @@ class SimonGame extends Component {
     }
 
     gameOver() {
-      console.log('WRONG!');
-      console.log(`PC moves: ${console.dir(this.state.gameMoves)}`);
-      console.log(`Your moves: ${console.dir(this.state.userMoves)}`);
       this.setState({
         playing: false,
         lost: true,
-      });
+        currentSound:SOUND_FILES[4]
+      }, ()=>setTimeout(()=>this.setState({ lost:false }, this.resetGame()), 2000));
+      
     }
 
     //fix this horrible abomination
