@@ -135,7 +135,7 @@ class SimonGame extends Component {
           this.buttonRefs[item].ref.current.disableButton();
         }
         return new Promise(res => {
-            setTimeout(res(),200);
+            setTimeout(res(), 200);
         });
       }else {
         for (const item in this.buttonRefs){
@@ -164,7 +164,7 @@ class SimonGame extends Component {
         await this.toggleControls()
         const number = this.generateNumber();
         this.setState({ gameMoves: [...this.state.gameMoves, number] }, async () => {
-            await new Promise(res=>setTimeout(() => res(), 500));
+            await new Promise(res => setTimeout(() => res(), 500));
             await this.playCompMoves();
             this.toggleTurns(this.toggleControls);
             this.playerTurnTimer();

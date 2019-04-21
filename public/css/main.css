@@ -65,35 +65,36 @@ html {
     height: 1rem;
     width: 7rem;
     margin: 0 auto;
-    transform: translateY(2rem); }
+    transform: translateY(2.5rem); }
     #main__simon__game__container__center__controls__container__buttons {
       display: flex;
       flex-wrap: wrap;
-      width: 100%;
+      width: 95%;
       height: 100%;
       align-items: center;
       justify-content: space-between; }
       #main__simon__game__container__center__controls__container__buttons label {
-        flex: 33%; }
+        position: absolute;
+        font-size: 0.8rem;
+        transform: translate(-0.1rem, -1rem); }
       #main__simon__game__container__center__controls__container__buttons--audio {
-        height: 90%;
+        height: 1rem;
         width: 1rem;
         background-color: #dbdb1a;
         border-radius: 50%;
-        border: 2px solid #202020;
-        transform: perspective(0, 4deg); }
+        border: 1px solid #202020; }
       #main__simon__game__container__center__controls__container__buttons--reset {
-        height: 90%;
+        height: 1rem;
         width: 1rem;
         background-color: #db1a1a;
         border-radius: 50%;
-        border: 2px solid #202020; }
+        border: 1px solid #202020; }
       #main__simon__game__container__center__controls__container__buttons--start {
-        height: 90%;
+        height: 1rem;
         width: 1rem;
         background-color: #1a9edb;
         border-radius: 50%;
-        border: 2px solid #202020; }
+        border: 1px solid #202020; }
 
 #main__simon__game__container__buttons {
   justify-content: center;

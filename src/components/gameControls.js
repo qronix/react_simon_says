@@ -6,9 +6,18 @@ import React from 'react';
      }
     return(
     <div id="main__simon__game__container__center__controls__container__buttons">
-        <div id="main__simon__game__container__center__controls__container__buttons--audio" onClick={ () => handleClick('audio') }></div>
-        <div id="main__simon__game__container__center__controls__container__buttons--reset" onClick={ () => handleClick('reset') }></div>
-        <div id="main__simon__game__container__center__controls__container__buttons--start" onClick={ () => handleClick('start') }></div>
+        <div className="main__simon__game__container__center__controls__container__buttons__container">
+            <label htmlFor="main__simon__game__container__center__controls__container__buttons--audio">Mute</label>
+            <div id="main__simon__game__container__center__controls__container__buttons--audio" onClick={ () => handleClick('audio') }></div>
+        </div>
+        <div className="main__simon__game__container__center__controls__container__buttons__container">
+            <label htmlFor="main__simon__game__container__center__controls__container__buttons--reset">Reset</label>
+            <div id="main__simon__game__container__center__controls__container__buttons--reset" onClick={ () => handleClick('reset') }></div>
+        </div>
+        <div className="main__simon__game__container__center__controls__container__buttons__container">
+            <label htmlFor="main__simon__game__container__center__controls__container__buttons--start">Start</label>
+            <div id="main__simon__game__container__center__controls__container__buttons--start" onClick={ () => handleClick('start') }></div>
+        </div>
     </div>
     );
 }
