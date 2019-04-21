@@ -243,7 +243,8 @@ class SimonGame extends Component {
             <div id="main__simon__game__container__center">
                 <span>SIMON</span>
                 <div id="main__simon__game__container__center__controls__display">{ this.state.gameMoves.length }</div>
-                <ReactHowler src={ [`sounds/${this.state.currentSound}`] } playing={ this.state.playingSound }  html5 ref={ this.howlerRef }/>
+                <ReactHowler src={ [`${process.env.PUBLIC_URL}/sounds/${this.state.currentSound}.ogg`,
+                `${process.env.PUBLIC_URL}/sounds/${this.state.currentSound}.mp3`, `${process.env.PUBLIC_URL}/sounds/${this.state.currentSound}.webm` ] } playing={ this.state.playingSound } ref={ this.howlerRef }/>
             </div>
                 <div id="main__simon__game__container__center__controls__container">
                     <GameControls controlClick={ this.handleControlClick } />

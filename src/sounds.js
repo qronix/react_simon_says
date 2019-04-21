@@ -1,1 +1,1 @@
-export const SOUND_FILES = ['beep_one.ogg', 'beep_two.ogg', 'beep_three.ogg', 'beep_four.ogg','game_over.ogg']
+export const SOUND_FILES = ['beep_one', 'beep_two', 'beep_three', 'beep_four','game_over']
