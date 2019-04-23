@@ -1,1 +1,1 @@
-export const SOUND_FILES = ['beep_one', 'beep_two', 'beep_three', 'beep_four','game_over']
+export const SOUND_FILES = ['beep_one', 'beep_two', 'beep_three', 'beep_four','game_over'];

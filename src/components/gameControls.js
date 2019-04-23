@@ -2,12 +2,13 @@ import React from 'react';
 
  function GameControl(props){
      const handleClick = (action) => {
-         props.controlClick(action)
+         props.controlClick(action);
      }
+
     return(
     <div id="main__simon__game__container__center__controls__container__buttons">
         <div className="main__simon__game__container__center__controls__container__buttons__container">
-            <label htmlFor="main__simon__game__container__center__controls__container__buttons--audio">Mute</label>
+            <label htmlFor="main__simon__game__container__center__controls__container__buttons--audio">{props.muted ? 'Mute' : 'Unmute'}</label>
             <div id="main__simon__game__container__center__controls__container__buttons--audio" onClick={ () => handleClick('audio') }></div>
         </div>
         <div className="main__simon__game__container__center__controls__container__buttons__container">

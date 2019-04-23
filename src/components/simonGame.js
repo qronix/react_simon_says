@@ -19,7 +19,7 @@ class SimonGame extends Component {
       playingSound: false,
       currentSound: SOUND_FILES[0],
       keyTimers: [],
-    }
+    };
 
     constructor() {
       super();
@@ -32,22 +32,16 @@ class SimonGame extends Component {
         { id: 2, ref: React.createRef() },
         { id: 3, ref: React.createRef() },
       ];
-      this.handleButtonClick = this.handleButtonClick.bind(this);
-      this.playCompMoves = this.playCompMoves.bind(this);
-      this.startGame = this.startGame.bind(this);
-      this.toggleControls = this.toggleControls.bind(this);
-      this.checkPlayerMoves = this.checkPlayerMoves.bind(this);
       this.howlerRef = React.createRef();
-      this.resetGame = this.resetGame.bind(this);
       this.soundColorMap = {
           'red':0,
           'green':1,
           'blue':2,
           'yellow':3
-      }
+      };
     }
 
-    handleButtonClick(color){
+    handleButtonClick = color => {
       const choiceIndex = this.colors.indexOf(color);
       this.clearTimers();
       this.setState({ userMoves: [...this.state.userMoves, choiceIndex], playerPlayed:true }, () => {
@@ -56,43 +50,47 @@ class SimonGame extends Component {
       });
     }
 
-    clearTimers(){
+    clearTimers = () => {
         this.setState({ keyTimers: [] });
     }
 
-    playSound(color){
+    playSound = color => {
         if(this.state.audioEnabled && this.state.playing){
-            let soundIndex = this.soundColorMap[color] || this.soundColorMap['red'];
+            let soundIndex = this.soundColorMap[color];
             this.setState({ currentSound:SOUND_FILES[soundIndex], playingSound: true });
         } else{
             this.setState({ playingSound:false });
         }
     }
 
-    handleControlClick = (action) => {
-      if (action === 'start'){
-        this.startGame();
-      }
-      if (action === 'audio'){
-        this.toggleAudio();
-      }
-      if (action === 'reset'){
+    handleControlClick = action => {
+      switch(action){
+        case 'start':
+          this.startGame();
+          break;
+        case 'audio':
+          this.toggleAudio();
+          break;
+        case 'reset':
           this.resetGame();
+          break;
+        default:
+          break;
       }
     }
 
-    toggleAudio() {
+    toggleAudio = () => {
       if (this.state.audioEnabled){
-        this.setState({ audioEnabled: false });
+        this.setState({ audioEnabled: false , currentSound:null , playingSound: false });
       }
       else{
         this.setState({ audioEnabled: true });
       }
     }
 
-    startGame() {
+    startGame = ()=> {
         if(!this.state.playing && !this.state.lost){
-            this.setState({ currentSound: SOUND_FILES })
+            this.setState({ currentSound: SOUND_FILES });
             this.setState({ playing: true, compsTurn: true, started: true }, () => this.playGame());
         }
         else if(!this.state.lost){
@@ -100,11 +98,7 @@ class SimonGame extends Component {
         }
     }
 
-    audioFinished(){
-        this.setState({ playingSound: false });
-    }
-
-    resetGame(){
+    resetGame = () => {
         this.killButtons();
         this.setState({ 
             gameMoves: [],
@@ -122,14 +116,14 @@ class SimonGame extends Component {
         this.resetButtons();
     }
 
-    resetButtons(){
-        let targets = this.buttonRefs
+    resetButtons = () => {
+        let targets = this.buttonRefs;
         for(const item in targets){
             targets[item].ref.current.resetButton();
         }
     }
 
-    toggleControls(){
+    toggleControls = () => {
       if (this.state.compsTurn){
         for (const item in this.buttonRefs){
           this.buttonRefs[item].ref.current.disableButton();
@@ -137,14 +131,14 @@ class SimonGame extends Component {
         return new Promise(res => {
             setTimeout(res(), 200);
         });
-      }else {
+      }else{
         for (const item in this.buttonRefs){
           this.buttonRefs[item].ref.current.enableButton();
         }
       }
     }
 
-    toggleTurns(fn){
+    toggleTurns = fn => {
         if(this.state.compsTurn){
             this.setState({compsTurn:false, playerTurn:true, playerPlayed:false}, () => fn());
         } else{
@@ -152,7 +146,7 @@ class SimonGame extends Component {
         }   
     }
 
-    killButtons(){
+    killButtons = () => {
         for (const item in this.buttonRefs){
             this.buttonRefs[item].ref.current.killButton();
         }
@@ -161,7 +155,7 @@ class SimonGame extends Component {
     playGame = async () => {
       if (this.state.compsTurn && this.state.playing){
         this.setState({ userMoves: [] });
-        await this.toggleControls()
+        await this.toggleControls();
         const number = this.generateNumber();
         this.setState({ gameMoves: [...this.state.gameMoves, number] }, async () => {
             await new Promise(res => setTimeout(() => res(), 500));
@@ -172,7 +166,7 @@ class SimonGame extends Component {
       }
     }
 
-    async playCompMoves(){
+      playCompMoves = async () => {
       for (let i = 0; i < this.state.gameMoves.length; i++){
           if(this.state.playing){
             const colorIndex = this.state.gameMoves[i];
@@ -182,7 +176,7 @@ class SimonGame extends Component {
                     (() => {
                         if(this.state.playing){
                             this.buttonRefs[colorIndex].ref.current.autoClick();
-                            this.playSound(this.colors[colorIndex])
+                            this.playSound(this.colors[colorIndex]);
                         }
                     })()
                 )}, this.timeBetweenPCMoves);
@@ -196,7 +190,7 @@ class SimonGame extends Component {
       });
     }
 
-    checkPlayerMoves(){
+    checkPlayerMoves = () =>{
       for (let i = 0; i < this.state.userMoves.length; i++){
         if (this.state.gameMoves[i] !== this.state.userMoves[i]){
           return this.gameOver();
@@ -211,13 +205,12 @@ class SimonGame extends Component {
       }
     }
 
-    gameOver(){
+    gameOver = () => {
       this.setState({
         playing: false,
         lost: true,
         currentSound:SOUND_FILES[4]
       }, () => setTimeout( () => this.setState({ lost:false }, this.resetGame()), 2000));
-      
     }
 
     playerTurnTimer = () => {
@@ -229,15 +222,15 @@ class SimonGame extends Component {
       this.setState({ keyTimers: [...this.state.keyTimers, id] });
     }
 
-    checkKeyTimer(id){
+    checkKeyTimer = id => {
         if(this.state.keyTimers.indexOf(id) !== -1){
             this.gameOver();
         }
     }
-    generateNumber= () => Math.floor(Math.random() * (this.buttonRefs.length));
 
+    generateNumber = () => Math.floor(Math.random() * (this.buttonRefs.length));
 
-    render(){
+    render = () => {
       return (
           <div id="main__simon__game__container">
             <div id="main__simon__game__container__center">
@@ -247,7 +240,7 @@ class SimonGame extends Component {
                 `${process.env.PUBLIC_URL}/sounds/${this.state.currentSound}.mp3`, `${process.env.PUBLIC_URL}/sounds/${this.state.currentSound}.webm` ] } playing={ this.state.playingSound } ref={ this.howlerRef }/>
             </div>
                 <div id="main__simon__game__container__center__controls__container">
-                    <GameControls controlClick={ this.handleControlClick } />
+                    <GameControls controlClick={ this.handleControlClick } muted={this.state.audioEnabled}/>
                 </div>
             <div id="main__simon__game__container__buttons">
                 <GameButton onClick = { this.handleButtonClick } color = { this.colors[0] }  buttonDelay = { this.buttonDelayTime } ref={ this.buttonRefs[0].ref } />
