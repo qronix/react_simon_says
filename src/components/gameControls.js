@@ -1,6 +1,8 @@
 import React from 'react';
 
  function GameControl(props){
+     
+    //guess what this does
      const handleClick = (action) => {
          props.controlClick(action);
      }
